@@ -1,90 +1,113 @@
 # BesperBot
 
-A JavaScript chatbot integration library for Microsoft Bot Framework.
+**BesperBot** is a simple and efficient JavaScript library designed to seamlessly integrate chatbots available under [b-esper.com](https://b-esper.com) into your web applications. With minimal setup, you can enhance user engagement and provide instant support effortlessly.
 
 ## Prerequisites
-- A Microsoft Azure Bot configured and deployed
-- Bot Framework Web Chat support enabled
-- Valid bot identifier from Azure
+
+Before integrating BesperBot, ensure you have the following:
+
+- **Active Besper Bot**: An active bot configured under [b-esper.com](https://b-esper.com).
+- **Bot Identifier**: A valid bot ID provided by b-esper.com.
 
 ## Installation
-Overview
-Besperbot is a centralized JavaScript library for integrating Azure Bot Framework chatbots into your web applications. It handles chatbot setup, authentication, and styling, allowing for easy customization and maintenance across multiple instances.
 
-Features
-Centralized Setup: Manage chatbot configurations from a single library.
-Customizable Styles: Separate widget and chat styles via JSON for easy theming.
-Azure Bot Framework Integration: Seamlessly integrates with Azure Bots using Direct Line tokens.
-Responsive Design: Ensures the chatbot looks great on all devices.
-Installation
-Include the Library:
+### Step 1: Include the Library
 
-Add the besperbot.bundle.js script to your HTML file.
+Add the `besperbot.bundle.js` script to your HTML file. This script is responsible for initializing and managing the chatbot integration.
 
-``
-
+```html
 <script src="path/to/besperbot.bundle.js"></script>
-``
+```
 
-Initialize the Chatbot:
+### Step 2: Initialize the Chatbot
 
-Ensure that your backend API is set up to provide the necessary payload.
+Add a container element where the chatbot will be rendered and initialize BesperBot with your bot's ID. Here's a lean and functional example:
 
-Configuration
-Besperbot requires a payload from your backend API to initialize the chatbot. This payload should include your bot ID, widget styles, chat styles, and the Direct Line token.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BesperBot Integration</title>
+    <style>
+        /* Optional: Customize the chatbot container */
+        #bsp_chatbot-container {
+            /* Example custom styles */
+            width: 300px;
+            height: 500px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            /* Add more custom styles as needed */
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot Container -->
+    <div id="bsp_chatbot-container"></div>
 
-API Endpoint
-Your backend should expose an API endpoint at:
+    <!-- Required Dependency -->
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    
+    <!-- Load BesperBot Library -->
+    <script src="path/to/besperbot.bundle.js"></script>
 
-https://b-esper-apim.azure-api.net/dev/sessions/initiate
+    <!-- Initialize BesperBot -->
+    <script>
+        window.addEventListener('load', async () => {
+            try {
+                await window.BesperBot.initSession({
+                    id: 'YOUR_BOT_ID_HERE', // Replace with your actual bot ID from b-esper.com
+                    containerId: 'bsp_chatbot-container',
+                    widget: true // Set to false to embed the chat directly without a widget button
+                });
+                console.log('BesperBot initialized successfully.');
+            } catch (error) {
+                console.error('Failed to initialize BesperBot:', error);
+            }
+        });
+    </script>
+</body>
+</html>
+```
 
-This endpoint should accept a POST request with the following body:
+**Note**: Replace `'YOUR_BOT_ID_HERE'` with your actual bot ID provided by [b-esper.com](https://b-esper.com).
 
-{ "product": "directline-access", "action": "get_directline_access", "data": { "bot-identifier": "YOUR_BOT_ID" } }
+## Customization
 
-Sample Payload
-Your backend should respond with a JSON payload structured as follows:
+- **Widget Mode**: Toggle between a chatbot widget button or an embedded chat interface by setting the `widget` parameter.
 
-{ "id": "YOUR_BOT_ID", "containerId": "chatbot-container", "widget": true, "token": "YOUR_DIRECT_LINE_TOKEN", "styles": { "widgetStyles": { "widgetBackgroundColor": "#ffffff", "widgetColor": "#000000", "widgetWidth": "60px", "widgetHeight": "60px", "position": "fixed", "bottom": "20px", "right": "20px", "border": "none", "borderRadius": "50%", "cursor": "pointer", "zIndex": "1000", "boxShadow": "0 4px 8px rgba(0, 0, 0, 0.2)" }, "chatStyles": { "width": "400px", "height": "600px", "backgroundColor": "#ffffff", "bubbleBackground": "#f7fafc", "bubbleFromUserBackgroundColor": "#805ad5", "bubbleTextColor": "#1a202c", "bubbleFromUserTextColor": "#ffffff", "bubbleBorderColor": "#edf2f7", "bubbleFromUserBorderColor": "#805ad5", "bubbleBorderRadius": "16px", "bubbleFromUserBorderRadius": "16px", "bubblePadding": "16px", "bubbleFromUserPadding": "16px", "fontSize": "15px", "fontFamily": "'SF Pro Display', -apple-system, sans-serif", "inputBoxFontSize": "15px", "inputBoxFontFamily": "'SF Pro Display', -apple-system, sans-serif", "botAvatarImage": "", "botAvatarInitials": "AI", "userAvatarImage": "", "userAvatarInitials": "U", "botAvatarSize": "36px", "userAvatarSize": "36px", "suggestedActionBackgroundColor": "#805ad5", "suggestedActionTextColor": "#ffffff", "suggestedActionBorderColor": "#805ad5", "suggestedActionBorderRadius": "24px", "suggestedActionPadding": "12px", "timestampFont": "12px SF Pro Display", "timestampColor": "#718096", "sendBoxBackgroundColor": "#f7fafc", "sendBoxBorderColor": "#edf2f7", "sendBoxBorderRadius": "12px", "sendBoxHeight": "48px", "sendBoxTextColor": "#1a202c", "sendBoxPadding": "16px", "rootHeight": "600px", "rootWidth": "100%", "textContentColor": "#1a202c", "textContentFontFamily": "'SF Pro Display', -apple-system, sans-serif", "textContentFontWeight": "400", "hideUploadButton": true, "animationDuration": "0.2s", "messagePadding": "16px" } } }
+    ```javascript
+    window.BesperBot.initSession({
+        id: 'YOUR_BOT_ID_HERE',
+        containerId: 'bsp_chatbot-container',
+        widget: false // Embeds the chat directly without a widget button
+    });
+    ```
 
-Usage
-Ensure Backend is Running:
+- **Custom CSS**: Apply custom styles to the chatbot container by targeting the `<div id="bsp_chatbot-container"></div>` element. This allows you to adjust the size, position, and appearance to match your website's design.
 
-Make sure your backend API at https://b-esper-apim.azure-api.net/dev/sessions/initiate is up and properly configured to return the expected payload.
+    ```css
+    #bsp_chatbot-container {
+        /* Example custom styles */
+        width: 400px;
+        height: 600px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        /* Add more custom styles as needed */
+    }
+    ```
 
-Initialize the Chatbot:
+All other customizations are managed through [b-esper.com](https://b-esper.com), ensuring a centralized and streamlined configuration process.
 
-The besperbot.bundle.js will automatically fetch the payload from your backend and render the chatbot widget.
+## Security Considerations
 
-besperbot.bundle.js Overview
-The besperbot.bundle.js script handles the following:
+Ensure the security and integrity of your chatbot integration by adhering to the following best practices:
 
-Fetching Configuration: Makes an API call to retrieve the chatbot token and styling configurations.
-Rendering Widget: Creates and styles the chatbot widget button.
-Initializing Chat: Sets up the Azure Bot Web Chat with the provided token and styles.
-Handling Toggle: Manages the visibility of the chat window when the widget button is clicked.
-Key Functions
-initializeChat(container, token, chatStyles)
-Initializes the Azure Bot Web Chat within the specified container using the provided token and styles.
+- **Token Management**: Protect tokens by handling them securely and avoiding public exposure.
+- **CORS Policies**: Configure your backend to permit requests only from your trusted frontend domains.
+- **HTTPS**: Always utilize HTTPS to encrypt data in transit, safeguarding interactions between clients and your backend.
 
-applyStyles(widgetButton, chatContainer, widgetStyles, chatStyles)
-Applies the given widget and chat styles to the respective elements.
+---
 
-renderWidget(container)
-Fetches the payload from the backend and renders the chatbot widget accordingly.
-
-Customization
-You can customize the appearance and behavior of the chatbot by modifying the widgetStyles and chatStyles in your backend payload. This allows for centralized management of styles without the need to alter the library for each instance.
-
-Additional Widget Styles
-You can add more styles to the widgetStyles object in the payload to further customize the widget appearance. For example:
-
-{ "widgetStyles": { "position": "fixed", "bottom": "20px", "right": "20px", "border": "none", "borderRadius": "50%", "cursor": "pointer", "zIndex": "1000", "boxShadow": "0 4px 8px rgba(0, 0, 0, 0.2)" // Add more styles as needed } }
-
-Error Handling
-The library includes basic error handling for failed API calls. Ensure that your backend API provides meaningful error messages to facilitate easier debugging.
-
-Security Considerations
-Token Management: Ensure that Direct Line tokens are handled securely and are not exposed publicly.
-CORS Policies: Configure your backend to allow requests from your frontend domain.
-HTTPS: Always use HTTPS to secure data in transit.
+With **BesperBot**, integrating your chatbot from [b-esper.com](https://b-esper.com) into your web applications is straightforward and hassle-free. Customize with ease and maintain a seamless user experience across all your platforms.

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div id="bsp_chatbot-container"></div>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src="../src/index.js"></script>
+    <script>
+        window.addEventListener('load', async () => {
+            await window.BesperBot.initSession({
+                id: 'asst_G2sMr86edlZJfXqxkNqIwmDN',
+                containerId: 'bsp_chatbot-container',
+                widget: true
+            });
+        });
+    </script>
+</body>
+</html>
