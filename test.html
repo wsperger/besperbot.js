@@ -1,0 +1,111 @@
+
+<div id="b-esper-bot-container">
+    <div class="bot-logo-wrapper">
+      <div class="bot-logo-circle">
+        <span class="bot-logo-letter">B</span>
+      </div>
+      <span class="bot-logo-text">-esper</span>
+      <span class="bot-js-text">Bot.js</span>
+    </div>
+    <div class="bot-tagline">
+      Front-End Infrastructure<br>
+      made <span class="bot-tagline-highlight">simple</span>
+    </div>
+  </div>
+  
+  <style>
+  #b-esper-bot-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 200px;
+    width: 200px;
+    background-color: #f7f9fc;
+    border: 1px solid #e1e4e8;
+    border-radius: 50%; /* Change to 8px for square */
+    text-align: center;
+  }
+  
+  .bot-logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .bot-logo-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #004687;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .bot-logo-letter {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+  }
+  
+  .bot-logo-text {
+    color: #004687;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .bot-js-text {
+    color: #f0db4f; /* JS typically represented with yellow */
+    font-size: 15px;
+  }
+  
+  .bot-tagline {
+    color: #004687;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  
+  .bot-tagline-highlight {
+    font-weight: bold;
+    position: relative;
+  }
+  
+  .bot-tagline-highlight::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #004687;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+  
+  #b-esper-bot-container:hover .bot-tagline-highlight::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+  </style>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const botContainer = document.getElementById('b-esper-bot-container');
+    const taglineHighlight = botContainer.querySelector('.bot-tagline-highlight');
+  
+    botContainer.addEventListener('mouseenter', function() {
+      taglineHighlight.style.color = '#007ACC'; // Hover color change
+    });
+  
+    botContainer.addEventListener('mouseleave', function() {
+      taglineHighlight.style.color = '#004687'; // Original color
+    });
+  });
+  </script>

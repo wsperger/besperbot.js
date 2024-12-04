@@ -1,4 +1,13 @@
-BESPERBOT Library
+# BesperBot
+
+A JavaScript chatbot integration library for Microsoft Bot Framework.
+
+## Prerequisites
+- A Microsoft Azure Bot configured and deployed
+- Bot Framework Web Chat support enabled
+- Valid bot identifier from Azure
+
+## Installation
 Overview
 Besperbot is a centralized JavaScript library for integrating Azure Bot Framework chatbots into your web applications. It handles chatbot setup, authentication, and styling, allowing for easy customization and maintenance across multiple instances.
 
