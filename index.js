@@ -1,4 +1,3 @@
-
 /**
  * BesperBot - A JavaScript chatbot integration library for Microsoft Bot Framework
  * Version: 1.0.0
@@ -48,12 +47,25 @@
          * Initializes the chatbot session.
          * @param {Object} params - Parameters for session initialization.
          * @param {string} params.id - The bot identifier.
-         * @param {string} [params.containerId="chatbot-container"] - The ID of the container element.
-         * @param {boolean} [params.widget=true] - Flag to render as widget or embedded chat.
-         * @throws {Error} If container element is not found or API calls fail.
+         * @param {string} params.containerId - The ID of the container element.
+         * @param {boolean} params.widget - Flag to render as widget or embedded chat.
+         * @throws {Error} If required parameters are missing or API calls fail.
          */
-        async function initSession({ id, containerId = "chatbot-container", widget = true }) {
+        async function initSession({ id, containerId, widget }) {
             console.log('BesperBot.initSession called with parameters:', { id, containerId, widget });
+
+            if (!id) {
+                console.error('BesperBot.initSession: "id" parameter is required.');
+                return;
+            }
+            if (!containerId) {
+                console.error('BesperBot.initSession: "containerId" parameter is required.');
+                return;
+            }
+            if (typeof widget !== 'boolean') {
+                console.error('BesperBot.initSession: "widget" parameter must be a boolean.');
+                return;
+            }
 
             try {
                 // Get the container element
@@ -94,6 +106,11 @@
          * @throws {Error} If API call fails or returns invalid data.
          */
         async function callFrontEndSetup(botId) {
+            if (!botId) {
+                console.error('callFrontEndSetup: "botId" is required.');
+                throw new Error('"botId" parameter is missing.');
+            }
+
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -126,6 +143,15 @@
         async function initConversation(botId, containerId) {
             console.log('Initializing conversation for bot:', botId);
 
+            if (!botId) {
+                console.error('initConversation: "botId" is required.');
+                throw new Error('"botId" parameter is missing.');
+            }
+            if (!containerId) {
+                console.error('initConversation: "containerId" is required.');
+                throw new Error('"containerId" parameter is missing.');
+            }
+
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -157,6 +183,11 @@
          * @param {Object} widgetStyles - Styles for the widget button and chat container.
          */
         function applyStyles(widgetStyles) {
+            if (!widgetStyles) {
+                console.error('applyStyles: "widgetStyles" is required.');
+                return;
+            }
+
             let styleTag = document.getElementById('besperbot-styles');
             if (!styleTag) {
                 styleTag = document.createElement('style');
@@ -166,14 +197,14 @@
 
             styleTag.innerHTML = `
                 .besperbot-chat-container {
-                    width: ${widgetStyles.width || '400px'};
-                    height: ${widgetStyles.height || '600px'};
-                    background-color: ${widgetStyles.backgroundColor || '#ffffff'};
-                    border-radius: ${widgetStyles.bubbleBorderRadius || '16px'};
+                    width: ${widgetStyles.width};
+                    height: ${widgetStyles.height};
+                    background-color: ${widgetStyles.backgroundColor};
+                    border-radius: ${widgetStyles.bubbleBorderRadius};
                     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-                    font-family: ${widgetStyles.fontFamily || "'SF Pro Display', -apple-system, sans-serif"};
-                    font-size: ${widgetStyles.fontSize || '15px'};
-                    color: ${widgetStyles.textContentColor || '#1a202c'};
+                    font-family: ${widgetStyles.fontFamily};
+                    font-size: ${widgetStyles.fontSize};
+                    color: ${widgetStyles.textContentColor};
                     position: fixed;
                     bottom: 90px;
                     right: 20px;
@@ -183,12 +214,12 @@
                 }
 
                 .besperbot-widget-button {
-                    width: ${widgetStyles.widgetWidth || '60px'};
-                    height: ${widgetStyles.widgetHeight || '60px'};
+                    width: ${widgetStyles.widgetWidth};
+                    height: ${widgetStyles.widgetHeight};
                     border-radius: 50%;
                     border: none;
-                    background-color: ${widgetStyles.widgetBackgroundColor || '#ffffff'};
-                    color: ${widgetStyles.widgetColor || '#000000'};
+                    background-color: ${widgetStyles.widgetBackgroundColor};
+                    color: ${widgetStyles.widgetColor};
                     font-size: 24px;
                     cursor: pointer;
                     z-index: 1001;
@@ -204,8 +235,8 @@
                 }
 
                 .besperbot-message {
-                    padding: ${widgetStyles.messagePadding || '16px'};
-                    border-bottom: 1px solid ${widgetStyles.bubbleBorderColor || '#edf2f7'};
+                    padding: ${widgetStyles.messagePadding};
+                    border-bottom: 1px solid ${widgetStyles.bubbleBorderColor};
                 }
             `;
         }
@@ -217,6 +248,19 @@
          * @param {Object} widgetStyles - Styles for the widget.
          */
         function renderWidget(container, botId, widgetStyles) {
+            if (!container) {
+                console.error('renderWidget: "container" is required.');
+                return;
+            }
+            if (!botId) {
+                console.error('renderWidget: "botId" is required.');
+                return;
+            }
+            if (!widgetStyles) {
+                console.error('renderWidget: "widgetStyles" is required.');
+                return;
+            }
+
             // Create widget button if it doesn't exist
             let widgetButton = container.querySelector('.besperbot-widget-button');
             if (!widgetButton) {
@@ -265,7 +309,24 @@
          * @param {Object} data - The conversation data including token and styles.
          */
         function renderChat(container, data) {
+            if (!container) {
+                console.error('renderChat: "container" is required.');
+                return;
+            }
+            if (!data) {
+                console.error('renderChat: "data" is required.');
+                return;
+            }
             const { token, chatStyles } = data;
+            if (!token) {
+                console.error('renderChat: "token" is required.');
+                return;
+            }
+            if (!chatStyles) {
+                console.error('renderChat: "chatStyles" is required.');
+                return;
+            }
+
             container.style.display = 'block';
             initializeWebChat(container, token, chatStyles);
         }
@@ -296,6 +357,19 @@
          * @throws {Error} If WebChat initialization fails.
          */
         function initializeWebChat(container, token, styles) {
+            if (!container) {
+                console.error('initializeWebChat: "container" is required.');
+                return;
+            }
+            if (!token) {
+                console.error('initializeWebChat: "token" is required.');
+                return;
+            }
+            if (!styles) {
+                console.error('initializeWebChat: "styles" are required.');
+                return;
+            }
+
             loadWebChatScript(() => {
                 try {
                     const { renderWebChat, createDirectLine } = window.WebChat;

@@ -1,12 +1,14 @@
 {
   "name": "besperbot",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A JavaScript chatbot integration library for Microsoft Bot Framework",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "browser": "dist/besperbot.min.js",
   "files": [
-    "dist"
+    "dist",
+    "index.js",
+    "styles.css"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -20,12 +22,13 @@
     "microsoft bot framework",
     "web chat"
   ],
-  "author": "Your Name",
+  "author": "B-esper UG",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/besperbot.git"
+    "url": "git+https://github.com/wsperger/besperbot.js.git"
   },
+  "homepage": "https://b-esper.com",
   "dependencies": {
     "botframework-webchat": ">=4.15.0"
   },
