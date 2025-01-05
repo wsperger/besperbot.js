@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage Testbot</title>
+
+  <style>
+/* Base styles with consistent font size */
+/* Core chat styling with unified font sizes */
+.webchat__basic-transcript,
+.webchat__bubble,
+.webchat__send-box,
+.webchat__send-box-text-box__input,
+.webchat__text-content,
+.webchat__text-content__markdown,
+.webchat__render-markdown,
+.webchat__text-content--is-markdown,
+.webchat__basic-transcript__activity-body,
+.webchat__stacked-layout__content,
+.webchat__stacked-layout__message,
+.ac-textBlock,
+.ac-pushButton,
+.webchat--css-bicoh-kdgeig {
+  font-family: system-ui, -apple-system, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #212529 !important;
+}
+
+/* Clean background for bubbles */
+.webchat__bubble {
+  background: #ffffff !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  padding: 12px !important;
+}
+
+/* User message styling - refined and consistent */
+.webchat__bubble--from-user,
+.webchat__bubble--from-user.webchat__bubble--nub-on-top {
+  background: #EBF5FF !important;
+  border: 1px solid #E1F0FF !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+.webchat__bubble--from-user .webchat__text-content,
+.webchat__bubble--from-user .webchat__text-content--is-plain,
+.webchat__bubble--from-user .webchat__text-content--markdown {
+  color: #2B5A99 !important;
+}
+
+/* Input box styling */
+.webchat__send-box-text-box__input {
+  background: #ffffff !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 4px !important;
+  padding: 12px !important;
+}
+
+/* Button styling */
+.webchat__send-button,
+.ac-pushButton {
+  background: #f8f9fa !important;
+  border: 1px solid #dee2e6 !important;
+  color: #212529 !important;
+  padding: 8px 12px !important;
+}
+
+.webchat__send-button:hover,
+.ac-pushButton:hover {
+  background: #e9ecef !important;
+}
+
+/* Clean send box area */
+.webchat__send-box {
+  border-top: 1px solid #dee2e6 !important;
+  background: #ffffff !important;
+  padding: 12px !important;
+}
+
+/* Hide attachment button */
+.webchat__upload-button {
+  display: none !important;
+}
+
+/* Consistent timestamp styling */
+.webchat__timestamp,
+.webchat__stacked-layout__status,
+.webchat__activity-status {
+  color: #6c757d !important;
+  font-size: 12px !important;
+}
+
+/* Markdown content consistency */
+.webchat__render-markdown p,
+.webchat__render-markdown--message-activity p {
+  margin: 0 0 8px 0 !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* Main transcript area */
+.webchat__basic-transcript {
+  background: #ffffff !important;
+  padding: 16px !important;
+}
+
+/* Scrollbar styling */
+.webchat__basic-transcript::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.webchat__basic-transcript::-webkit-scrollbar-thumb {
+  background: #dee2e6 !important;
+  border-radius: 3px !important;
+}
+  </style>
+
+  <!-- ===========================
+           CSS STYLES
+  ============================ -->
+  <style>
+    /* ===========================
+         Base Styles
+    ============================ */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+
+    .bsp-white-background {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 40px 0;
+      padding: 40px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .bsp-chatbot-and-table {
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .bsp-title {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #003057;
+    }
+    
+    .bsp-description {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      color: #5897de;
+    }
+    
+    .bsp-chatbot-input {
+      margin-bottom: 20px;
+    }
+    
+    .bsp-input-wrapper {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+    }
+    
+    .bsp-input-wrapper input {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    .bsp-input-wrapper button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #5897de;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    
+    .bsp-input-wrapper button:hover {
+      background-color: #003057;
+    }
+    
+    .bsp-input-wrapper button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+    
+    .bsp-message {
+      text-align: center;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    /* ===========================
+         Chatbot and Table Styles
+    ============================ */
+    .bsp-chatbot-content {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex: 1;
+    }
+    
+    #bspIframeContainer, 
+    #bspDataTableContainer {
+      flex: 1;
+      background-color: #f9fafb;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    #bspIframeContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #666;
+      min-height: 500px;
+    }
+    
+    #bspDataTableContainer {
+      display: flex;
+      flex-direction: column;
+      min-height: 500px;
+      position: relative; /* Make it a containing block for absolutely positioned elements */
+    }
+    
+    /* ===========================
+         Table Wrapper Styles
+    ============================ */
+    .table-wrapper {
+      position: relative;
+      flex: 1;
+      overflow: hidden; /* Prevent scroll */
+    }
+    
+    /* Table Styles */
+    #bspDataTable {
+      width: 100%;
+      border-collapse: collapse;
+      display: none; /* Initially hidden */
+    }
+    
+    #bspDataTable thead {
+      background-color: #A0D6FF; /* Light blue header */
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    
+    #bspDataTable th {
+      color: #003057;
+      padding: 15px;
+      text-align: left;
+      font-size: 16px; /* Increased font size for headers */
+    }
+    
+    #bspDataTable tbody td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px; /* Reduced font size for readability */
+    }
+    
+    /* Make entire row clickable */
+    #bspDataTable tbody tr {
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #bspDataTable tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+    
+    /* Remove link styles */
+    #bspDataTable a {
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    /* ===========================
+         Loading Animation Styles
+    ============================ */
+    /* Integrated Loading Animation Wrapper */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      overflow: hidden;
+      box-sizing: border-box;
+      transition: opacity 0.5s ease;
+      position: absolute; /* Position overlay absolutely within the container */
+      top: 0;
+      left: 0;
+      z-index: 2; /* Above the table */
+    }
+    
+    /* Status Area Styling */
+    .status-area {
+      height: 40px; /* Fixed height instead of 20% */
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      transition: all 0.3s ease;
+      color: #003057;
+    }
+    
+    /* Grid Container Styling */
+    .grid-container {
+      flex: 1;
+      display: grid;
+      gap: 1px; /* Cell gap */
+      padding: 1px; /* Overall padding */
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+    
+    .grid-cell {  
+      position: relative;  
+      background-color: transparent; 
+      box-sizing: border-box; 
+      will-change: background-color, transform, opacity;
+    }
+    
+    /* Highlighted Cell */
+    .grid-cell.highlighted { 
+      opacity: 0.8; 
+      transition: opacity 0.8s ease; /* Reduced transition duration */
+    }
+    
+    /* Result Overlay Styling */
+    .result-overlay { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(255, 255, 255, 0.95); /* Increased opacity for better visibility */
+      display: none; /* Initially hidden */ 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      pointer-events: none; /* Allows clicks to pass through */ 
+      z-index: 3; /* Above the loading container */
+    }
+    
+    .result-overlay.show { 
+      pointer-events: all; /* Enables interaction when visible */ 
+      display: flex; 
+    }
+    
+    /* Result Icons */
+    .result-icon { 
+      font-size: 60px; /* Adjusted size */
+      margin-bottom: 10px; /* Reduced margin for compactness */
+      transition: color 0.5s ease; /* Smooth transition for color change */ 
+    }
+    
+    .result-icon.success { 
+      color: #4CAF50; /* Stronger green for better visibility */
+    }
+    
+    .result-icon.failure { 
+      color: #f44336; /* Strong red color */
+    }
+    
+    /* Loading Text Styling */
+    .loading-text { 
+      font-family: Arial, sans-serif; 
+      font-size: 18px; 
+      color: #4B8FE2; 
+      text-align: center; 
+      margin-bottom: 20px; 
+      transition: opacity 0.5s ease, color 0.5s ease; 
+      opacity: 1; 
+    }
+    
+    /* Error Message Styling */
+    .error-message { 
+      font-family: Arial, sans-serif; 
+      font-size: 14px; /* Reduced font size for readability */
+      color: #E57373; 
+      text-align: center; 
+      margin-top: 10px; 
+      opacity: 0; 
+      transition: opacity 0.5s ease; 
+      display: none; 
+    }
+    
+    .error-message.show { 
+      display: block; 
+      opacity: 1; 
+    }
+
+    /* Success Message Styling */
+    .success-message { 
+      font-family: Arial, sans-serif; 
+      font-size: 14px; /* Reduced font size for readability */
+      color: #4CAF50; 
+      text-align: center; 
+      margin-top: 10px; 
+      opacity: 0; 
+      transition: opacity 0.5s ease; 
+      display: none; 
+    }
+    
+    .success-message.show { 
+      display: block; 
+      opacity: 1; 
+    }
+    
+    /* ===========================
+         Responsive Styles
+    ============================ */
+    @media (max-width: 768px) { 
+      .bsp-chatbot-content { 
+        flex-direction: column; 
+      } 
+
+      #bspIframeContainer, 
+      #bspDataTableContainer { 
+        width: 100%; 
+      } 
+
+      .bsp-input-wrapper { 
+        flex-direction: column; 
+      } 
+
+      .bsp-input-wrapper button { 
+        width: 100%; 
+      } 
+
+      .grid-container { 
+        gap: 1px; /* Reduced gap for smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bsp-white-background">
+    <div class="bsp-chatbot-and-table">
+      <!-- Title and Description -->
+      <h1 class="bsp-title">{% editable snippets 'homepage_testbot_title' %}</h1>
+      <p class="bsp-description">{% editable snippets 'homepage_testbot_description' %}</p>
+    
+      <!-- Input Section -->
+      <div class="bsp-chatbot-input">
+        <div class="bsp-input-wrapper">
+          <input type="url" id="bspWebsiteUrl" placeholder="Enter your website URL" required>
+          <button id="bspUpdateButton">{% editable snippets 'homepage_testbot_update_button_text' %}</button>
+        </div>
+      </div>
+    
+      <!-- Message Display -->
+      <div id="bspTimerMessage" class="bsp-message"></div>
+    
+      <!-- Chatbot and Table Content -->
+      <div class="bsp-chatbot-content">
+        <!-- Direct Line Chat Container -->
+        <div id="bspIframeContainer"></div>
+    
+        <!-- Data Table Container -->
+        <div id="bspDataTableContainer">
+          
+          <!-- Data Table -->
+          <div class="table-wrapper">
+            <table id="bspDataTable">
+              <thead>
+                <tr>
+                  <th>{% editable snippets 'homepage_testbot_table_header' %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Table rows will be dynamically added -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Loading Animation Overlay -->
+          <div id="loadingOverlay" class="loading-container state-idle">
+            <!-- Status Area -->
+            <div class="status-area">Loading...</div>
+
+            <!-- Grid Container -->
+            <div class="grid-container">
+              <!-- Grid cells will be generated by JavaScript -->
+            </div>
+
+            <!-- Result Overlay -->
+            <div id="resultOverlay" class="result-overlay">
+              <!-- Result icons and messages will be injected here -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ===========================
+         Bot Framework Direct Line Integration
+  ============================ -->
+  
+  <!-- Main JavaScript Module -->
+  <script>
+    (function() {
+      var testbotModule = {};
+
+      // Configuration Variables 
+      testbotModule.apiEndpoint = "{{ settings['bsp_apim'] }}";
+      testbotModule.initialEntityId = "0e620123-0e58-ef11-a4e6-6045bd170374";
+      testbotModule.pollingEntityId = "b3cfd14a-1484-ef11-ac20-0022485bb7a5";
+      testbotModule.pollingInterval = null;
+      testbotModule.pollingTime = 0;
+      testbotModule.maxPollingTime = 120; // Set to 2 minutes
+      testbotModule.firstDataReceived = false;
+      testbotModule.tickShown = false; // To ensure tick symbol appears only once
+      testbotModule.timeoutOccurred = false; // To track timeout
+      let animationState = 'idle'; // Initialize animationState
+
+      // Animation intervals and timeouts
+      let idleAnimationInterval;
+      let loadingAnimationInterval;
+      let errorAnimationTimeout;
+      let successAnimationTimeout;
+      let pollingTimeout; // To track the polling timeout
+      
+      // New global variables for wave intervals
+      let errorWaveInterval;
+      let successWaveInterval;
+
+      // Define color shades
+      const blueShades = ['#E0F2FF', '#A0D6FF', '#70BBFF', '#40A0FF', '#0085FF'];
+      const redShades = ['#FFE6E6', '#FFCCCC', '#FFB3B3', '#FF9999', '#FF8080'];
+      const greenShades = ['#E6FFE6', '#CCFFCC', '#B3FFB3', '#99FF99', '#80FF80'];
+      const darkBlueColor = '#003057'; // Dark blue color for success message
+      const errorColor = '#f44336'; // Strong red color for error message
+
+      // Array to store cells for quick access
+      let cellsArray = [];
+      let gridColumns = 0;
+      let gridRows = 0;
+      let gridCellSize = 15;
+      let gridCellGap = 1;
+
+      console.log('%c[testbotModule] Initialized with configuration variables:', 'color: green;', testbotModule);
+
+      // ===========================
+      //      GENERATE ANIMATION GRID
+      // ===========================
+      function generateGrid(customColumns, customRows) {
+        const container = document.querySelector('.grid-container');
+        if (!container) {
+          console.error('%c[generateGrid] .grid-container not found.', 'color: red;');
+          return;
+        }
+
+        // Clear existing cells
+        container.innerHTML = '';
+
+        // Get container dimensions
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+        console.log(`%c[generateGrid] Container dimensions: ${containerWidth}x${containerHeight}`, 'color: blue;');
+
+        const cellSize = 15; // Desired cell size
+        const cellGap = 1;   // Cell gap size
+
+        // Calculate number of columns and rows
+        const columns = customColumns || Math.floor((containerWidth + cellGap) / (cellSize + cellGap));
+        const rows = customRows || Math.floor((containerHeight + cellGap) / (cellSize + cellGap));
+        const totalCells = columns * rows;
+
+        // Update CSS grid properties
+        container.style.gridTemplateColumns = `repeat(${columns}, ${cellSize}px)`;
+        container.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
+
+        // Create cells using DocumentFragment for performance
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < totalCells; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          fragment.appendChild(cell);
+        }
+        container.appendChild(fragment);
+        console.log(`%c[generateGrid] Generated grid with ${columns} columns and ${rows} rows (${totalCells} cells).`, 'color: blue;');
+
+        // Precompute cell positions for efficient lookup
+        precomputeCellPositions(container, columns, rows, cellSize, cellGap);
+      }
+
+      function precomputeCellPositions(container, columns, rows, cellSize, cellGap) {
+        cellsArray = [];
+        gridColumns = columns;
+        gridRows = rows;
+        gridCellSize = cellSize;
+        gridCellGap = cellGap;
+
+        const cells = container.querySelectorAll('.grid-cell');
+        cells.forEach((cell, index) => {
+          const row = Math.floor(index / columns);
+          const col = index % columns;
+          cellsArray.push({ element: cell, row: row, col: col });
+        });
+        console.log('%c[precomputeCellPositions] Cell positions precomputed.', 'color: blue;');
+      }
+
+      // Adjust the grid when the window is resized
+      window.addEventListener('resize', debounce(function() {
+        console.log('%c[resize] Window resized. Regenerating grid.', 'color: orange;');
+        generateGrid();
+      }, 300));
+
+      // Initialize Animation Grid after DOM is fully loaded 
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('[initializeGrid] DOMContentLoaded event fired.');
+        generateGrid();
+        attachCellEvents(); // Attach event listeners after grid generation
+        setAnimationState('idle'); // Start with idle animation
+        console.log('[initializeGrid] Script initialized.');
+      });
+
+      // ===========================
+      //      EVENT LISTENERS
+      // ===========================
+      // Attach event listener to the update button
+      document.getElementById('bspUpdateButton').addEventListener('click', getInformation);
+
+      // Attach mousemove listener to the grid container for interactive feedback 
+      const gridContainer = document.querySelector('.grid-container');
+      if (gridContainer) {
+        gridContainer.addEventListener('mousemove', handleMouseMove);
+      } else {
+        console.error('%c[initializeGrid] Grid container not found for mousemove event.', 'color: red;');
+      }
+
+      // ===========================
+      //      STATE MANAGEMENT
+      // ===========================
+      function setAnimationState(state, message = '') {  
+        const loadingContainer = document.querySelector('.loading-container');  
+        const statusArea = document.querySelector('.status-area');  
+        if (!loadingContainer || !statusArea) { 
+          console.error('%c[setAnimationState] Required elements not found.', 'color: red;'); 
+          return; 
+        } 
+        // Remove all state classes 
+        loadingContainer.classList.remove('state-idle', 'state-loading', 'state-success', 'state-error');  
+        // Stop all animations
+        stopAllAnimations();
+        // Add new state class 
+        loadingContainer.classList.add(`state-${state}`);  
+        animationState = state; // Update the animationState variable 
+        console.log(`%c[Animation State] State set to: ${state}`, 'color: purple;'); 
+
+        // Update status message based on state 
+        switch(state) { 
+          case 'idle': 
+            statusArea.textContent = ''; 
+            startIdleAnimation();
+            break; 
+          case 'loading': 
+            statusArea.textContent = ''; 
+            startLoadingAnimation();
+            break; 
+          case 'success': 
+            statusArea.textContent = ''; 
+            startSuccessAnimation();
+            break; 
+          case 'error': 
+            statusArea.textContent = ''; 
+            startErrorAnimation(message);
+            break; 
+          default: 
+            statusArea.textContent = ''; 
+        } 
+      }
+
+      function stopAllAnimations() {
+        stopIdleAnimation();
+        stopLoadingAnimation();
+        stopSuccessAnimation();
+        stopErrorAnimation();
+      }
+
+      // ===========================
+      //      MAIN FUNCTION
+      // ===========================
+      function getInformation() {
+        console.log('%c[getInformation] Function called.', 'color: blue;');
+
+        const userWebsiteUrl = document.getElementById('bspWebsiteUrl').value.trim();
+        console.log('%c[getInformation] User entered URL:', 'color: blue;', userWebsiteUrl);
+
+        if (!userWebsiteUrl) {
+          alert('Please enter a valid URL');
+          console.warn('%c[getInformation] Invalid URL entered.', 'color: orange;');
+          return;
+        }
+
+        // Clear previous error messages and data 
+        clearPreviousData();
+
+        // Update animation to 'loading' state 
+        setAnimationState('loading');
+
+        // Start loading animation 
+        console.log('%c[getInformation] Started loading animation.', 'color: blue;');
+
+        // Make initial API call 
+        console.log('%c[getInformation] Making initial API call with URL:', 'color: blue;', userWebsiteUrl);
+        
+        fetch(testbotModule.apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            entity: testbotModule.initialEntityId,
+            content: userWebsiteUrl
+          })
+        })
+        .then(response => {
+          console.log('%c[getInformation] API response status:', 'color: blue;', response.status);
+          if (response.status === 200) {
+            console.log('%c[getInformation] Received 200 OK response.', 'color: blue;');
+            return response.json().then(data => {
+              console.log('%c[getInformation] Response JSON data:', 'color: blue;', data);
+              const count = data.count || 'unknown';
+              console.log(`%c[getInformation] Page has been demoed ${count} times.`, 'color: blue;');
+              disableUpdateButton(5 * 60, count); // Disable for 5 minutes
+
+              // Start polling for URL 
+              startPolling(userWebsiteUrl);
+              console.log('%c[getInformation] Started polling for URL.', 'color: blue;');
+
+              // Clear polling timeout as we have received a successful response
+              if (pollingTimeout) {
+                clearTimeout(pollingTimeout);
+                pollingTimeout = null;
+                console.log('%c[getInformation] Cleared polling timeout after successful response.', 'color: green;');
+              }
+            });
+
+          } else if (response.status === 429) {
+            console.warn('%c[getInformation] Received 429 Too Many Requests.', 'color: orange;');
+            // Handle 429 error 
+            handleError429("My apologies, but this page has been demoed too many times.");
+            // Update animation to 'error' state 
+            setAnimationState('error', "My apologies, but this page has been demoed too many times.");
+          } else {
+            console.error(`%c[getInformation] Unexpected response status: ${response.status}`, 'color: red;');
+            throw new Error('Network response was not ok');
+          }
+        })
+        .catch(error => {
+          console.error('%c[getInformation] Error during API call:', 'color: red;', error);
+          handleError("An error occurred. Please try again.");
+          // Update animation to 'error' state 
+          setAnimationState('error', "An error occurred. Please try again.");
+        });
+
+        // Start a timeout timer 
+        pollingTimeout = setTimeout(() => {
+          console.log('%c[getInformation] Timeout timer triggered.', 'color: magenta;');
+          if (!testbotModule.firstDataReceived && !testbotModule.timeoutOccurred) {
+            handleTimeout();
+          }
+        }, testbotModule.maxPollingTime * 1000); // 2 minutes timeout
+      }
+
+      // ===========================
+      //      HELPER FUNCTIONS
+      // ===========================
+      function clearPreviousData() {
+        console.log('%c[clearPreviousData] Clearing previous data and messages.', 'color: blue;');
+        // Clear the table rows 
+        const tableBody = document.querySelector('#bspDataTable tbody');
+        tableBody.innerHTML = '';
+
+        // Hide result overlay 
+        const resultOverlay = document.getElementById('resultOverlay');
+        if (resultOverlay) {
+          resultOverlay.classList.remove('show');
+          resultOverlay.innerHTML = '';
+          console.log('%c[clearPreviousData] resultOverlay hidden and cleared.', 'color: blue;');
+        } else {
+          console.error('%c[clearPreviousData] resultOverlay not found.', 'color: red;');
+        }
+
+        // Reset tickShown flag 
+        testbotModule.tickShown = false;
+        console.log('%c[clearPreviousData] Reset tickShown flag.', 'color: blue;');
+      }
+
+      function disableUpdateButton(duration, count) {
+        console.log('%c[disableUpdateButton] Disabling update button for duration:', 'color: purple;', duration);
+        const updateButton = document.getElementById('bspUpdateButton');
+        updateButton.disabled = true;
+        updateButton.style.backgroundColor = '#6c757d';
+        console.log('%c[disableUpdateButton] Update button disabled and styled.', 'color: purple;');
+
+        let remainingTime = duration;
+        updateButton.title = `This page has been demoed ${count} times. Try again in ${formatTime(remainingTime)}.`;
+        console.log('%c[disableUpdateButton] Initial button title set:', 'color: purple;', updateButton.title);
+
+        const timerInterval = setInterval(() => {
+          remainingTime--;
+          if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            updateButton.disabled = false;
+            updateButton.style.backgroundColor = '#5897de';
+            updateButton.title = ''; // Clear the title
+            console.log('%c[disableUpdateButton] Re-enabled update button after duration.', 'color: purple;');
+          } else {
+            updateButton.title = `This page has been demoed ${count} times. Try again in ${formatTime(remainingTime)}.`;
+            console.log(`%c[disableUpdateButton] Updated button title: ${updateButton.title}`, 'color: purple;');
+          }
+        }, 1000);
+      }
+
+      function enableUpdateButton() {
+        console.log('%c[enableUpdateButton] Enabling update button.', 'color: green;');
+        const updateButton = document.getElementById('bspUpdateButton');
+        updateButton.disabled = false;
+        updateButton.style.backgroundColor = '#5897de';
+        updateButton.title = ''; // Clear the title
+      }
+
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs < 10 ? '0' + secs : secs} minutes`;
+      }
+
+      function startPolling(userWebsiteUrl) {
+        console.log('%c[startPolling] Function called with URL:', 'color: green;', userWebsiteUrl);
+        if (testbotModule.pollingInterval) {
+          clearInterval(testbotModule.pollingInterval);
+          testbotModule.pollingInterval = null;
+          console.log('%c[startPolling] Existing polling interval cleared.', 'color: green;');
+        }
+        testbotModule.pollingTime = 0;
+        testbotModule.firstDataReceived = false; // Reset the flag for new URL
+        testbotModule.timeoutOccurred = false; // Reset timeout flag
+        console.log('%c[startPolling] Reset polling flags.', 'color: green;');
+
+        console.log('%c[startPolling] Polling started for URL:', 'color: green;', userWebsiteUrl);
+
+        // Start polling every 5 seconds
+        testbotModule.pollingInterval = setInterval(() => {
+          testbotModule.pollingTime += 5;
+          console.log(`%c[startPolling] Polling time updated: ${testbotModule.pollingTime} seconds.`, 'color: green;');
+          if (testbotModule.pollingTime >= testbotModule.maxPollingTime) {
+            clearInterval(testbotModule.pollingInterval);
+            testbotModule.pollingInterval = null;
+            console.log('%c[startPolling] Polling stopped after max polling time.', 'color: green;');
+            if (!testbotModule.firstDataReceived) {
+              handleTimeout();
+            }
+            return;
+          }
+          fetchPollingData(userWebsiteUrl);
+        }, 5000);
+      }
+
+      function fetchPollingData(userWebsiteUrl) {
+        console.log('%c[fetchPollingData] Fetching data for URL:', 'color: orange;', userWebsiteUrl);
+
+        fetch(testbotModule.apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            entity: testbotModule.pollingEntityId,
+            content: userWebsiteUrl
+          })
+        })
+        .then(response => {
+          console.log('%c[fetchPollingData] Data fetch response status:', 'color: orange;', response.status);
+          if (response.status === 200) {
+            console.log('%c[fetchPollingData] Received 200 OK response.', 'color: orange;');
+            return response.json();
+          } else if (response.status === 429) {
+            console.warn('%c[fetchPollingData] Received 429 Too Many Requests.', 'color: orange;');
+            throw new Error('Too Many Requests');
+          } else {
+            console.error(`%c[fetchPollingData] Unexpected response status: ${response.status}`, 'color: red;');
+            throw new Error('Network response was not ok');
+          }
+        })
+        .then(data => {
+          console.log('%c[fetchPollingData] Data received:', 'color: orange;', data);
+          if (Array.isArray(data) && data.length > 0) {
+            testbotModule.firstDataReceived = true;
+            console.log('%c[fetchPollingData] First data received. Updating table.', 'color: orange;');
+
+            // Update animation state to success
+            setAnimationState('success');
+
+            // Update the table with received data
+            updateTable(data);
+          } else {
+            console.log('%c[fetchPollingData] No data received in this poll.', 'color: orange;');
+          }
+        })
+        .catch(error => {
+          if (error.message === 'Too Many Requests') {
+            handleError429("My apologies, but this page has been demoed too many times.");
+            setAnimationState('error', "My apologies, but this page has been demoed too many times.");
+          } else {
+            console.error('%c[fetchPollingData] Error during data fetch:', 'color: red;', error);
+            handleError("An error occurred. Please try again.");
+            setAnimationState('error', "An error occurred. Please try again.");
+          }
+        });
+      }
+
+      // ===========================
+      //      ANIMATION FUNCTIONS
+      // ===========================
+      function startIdleAnimation() {
+        stopAllAnimations();
+        console.log('%c[startIdleAnimation] Starting idle animation.', 'color: green;');
+        
+        idleAnimationInterval = setInterval(() => {
+          if (!cellsArray.length) return;
+          // Pick a random cell with controlled probability near edges
+          const randomIndex = Math.floor(Math.random() * cellsArray.length);
+          const cellData = cellsArray[randomIndex];
+          
+          // Determine layer based on distance from edge
+          const layer = Math.min(cellData.row, gridRows - cellData.row - 1, cellData.col, gridColumns - cellData.col - 1);
+          
+          // Define probability based on layer
+          const probability = getIdleProbability(layer);
+          
+          if (Math.random() < probability) {
+            const color = blueShades[Math.floor(Math.random() * blueShades.length)];
+            cellData.element.style.backgroundColor = color;
+            
+            // Fade out after a short duration
+            setTimeout(() => {
+              cellData.element.style.backgroundColor = '';
+            }, 1000);
+          }
+        }, 300); // Adjusted interval for smoother animation
+      }
+
+      function stopIdleAnimation() {
+        if (idleAnimationInterval) {
+          clearInterval(idleAnimationInterval);
+          idleAnimationInterval = null;
+          console.log('%c[stopIdleAnimation] Idle animation stopped.', 'color: green;');
+        }
+        // Reset all cells
+        cellsArray.forEach(cellData => {
+          cellData.element.style.backgroundColor = '';
+        });
+      }
+
+      function getIdleProbability(layer) {
+        // Define the probabilities according to the layer
+        // Outer layers have lower probability, increasing towards the center
+        const layerProbabilities = [0.1, 0.125, 0.166, 0.25, 0.5, 1];
+        return layerProbabilities[layer] || 1; // Defaults to 1 for central layers
+      }
+
+      function startLoadingAnimation() {
+        stopAllAnimations();
+        console.log('%c[startLoadingAnimation] Starting loading animation.', 'color: green;');
+
+        // Clear all existing colors
+        cellsArray.forEach(cellData => {
+          cellData.element.style.backgroundColor = '';
+        });
+
+        // Start dynamic pixel animation
+        loadingAnimationInterval = setInterval(() => {
+          if (!cellsArray.length) return;
+          const randomIndex = Math.floor(Math.random() * cellsArray.length);
+          const cellData = cellsArray[randomIndex];
+
+          // Randomly select a blue shade
+          const color = blueShades[Math.floor(Math.random() * blueShades.length)];
+          cellData.element.style.backgroundColor = color;
+
+          // Fade out after 1 second
+          setTimeout(() => {
+            cellData.element.style.backgroundColor = '';
+          }, 1000);
+        }, 100); // Faster interval for more dynamic effect
+      }
+
+      function stopLoadingAnimation() {
+        if (loadingAnimationInterval) {
+          clearInterval(loadingAnimationInterval);
+          loadingAnimationInterval = null;
+          console.log('%c[stopLoadingAnimation] Loading animation stopped.', 'color: green;');
+        }
+        // Reset all cells
+        cellsArray.forEach(cellData => {
+          cellData.element.style.backgroundColor = '';
+        });
+      }
+
+      function startErrorAnimation(message) {
+        stopAllAnimations();
+        console.log('%c[startErrorAnimation] Starting error animation.', 'color: red;');
+
+        // Show result overlay with error message
+        const resultOverlay = document.getElementById('resultOverlay');
+        if (resultOverlay) {
+          resultOverlay.classList.add('show');
+          resultOverlay.innerHTML = `
+            <div class="result-icon failure">❌</div>
+            <div class="error-message show">${message}</div>
+          `;
+        }
+
+        // Implement red wave animation
+        errorWaveInterval = setInterval(() => {
+          if (!cellsArray.length) return;
+          // Select random cells near the edges
+          const edgeCells = cellsArray.filter(cell => {
+            return cell.row < 2 || cell.row > gridRows - 3 || cell.col < 2 || cell.col > gridColumns - 3;
+          });
+
+          edgeCells.forEach(cell => {
+            if (Math.random() < 0.1) { // Increased chance for better visibility
+              cell.element.style.backgroundColor = errorColor;
+
+              // Fade out after 300ms
+              setTimeout(() => {
+                cell.element.style.backgroundColor = '';
+              }, 300);
+            }
+          });
+        }, 200); // Adjusted interval for smoother wave
+
+        // Stop the wave after 5 seconds and reset to idle
+        errorAnimationTimeout = setTimeout(() => {
+          clearInterval(errorWaveInterval);
+          errorWaveInterval = null;
+
+          // Hide result overlay
+          if (resultOverlay) {
+            resultOverlay.classList.remove('show');
+            resultOverlay.innerHTML = '';
+          }
+
+          // Reset to idle state
+          setAnimationState('idle');
+          console.log('%c[startErrorAnimation] Reset to idle state after error.', 'color: red;');
+          enableUpdateButton(); // Re-enable the update button after error
+        }, 5000);
+      }
+
+      function stopErrorAnimation() {
+        if (errorAnimationTimeout) {
+          clearTimeout(errorAnimationTimeout);
+          errorAnimationTimeout = null;
+          console.log('%c[stopErrorAnimation] Error animation timeout stopped.', 'color: red;');
+        }
+        if (errorWaveInterval) {
+          clearInterval(errorWaveInterval);
+          errorWaveInterval = null;
+          console.log('%c[stopErrorAnimation] Error wave animation stopped.', 'color: red;');
+        }
+        // Hide result overlay
+        const resultOverlay = document.getElementById('resultOverlay');
+        if (resultOverlay) {
+          resultOverlay.classList.remove('show');
+          resultOverlay.innerHTML = '';
+        }
+      }
+
+      function startSuccessAnimation() {
+        stopAllAnimations();
+        console.log('%c[startSuccessAnimation] Starting success animation.', 'color: green;');
+
+        // Show result overlay with success message
+        const resultOverlay = document.getElementById('resultOverlay');
+        if (resultOverlay) {
+          resultOverlay.classList.add('show');
+          resultOverlay.innerHTML = `
+            <div class="result-icon success">✅</div>
+            <div class="success-message show">Success!</div>
+          `;
+        }
+
+        // Implement green wave animation
+        successWaveInterval = setInterval(() => {
+          if (!cellsArray.length) return;
+          // Select edge cells
+          const edgeCells = cellsArray.filter(cell => {
+            return cell.row < 2 || cell.row > gridRows - 3 || cell.col < 2 || cell.col > gridColumns - 3;
+          });
+
+          edgeCells.forEach(cell => {
+            if (Math.random() < 0.1) { // Increased chance for better visibility
+              const color = greenShades[Math.floor(Math.random() * greenShades.length)];
+              cell.element.style.backgroundColor = color;
+
+              // Fade out after 500ms
+              setTimeout(() => {
+                cell.element.style.backgroundColor = '';
+              }, 500);
+            }
+          });
+        }, 200); // Adjusted interval for smoother wave
+
+        // Stop the wave after 5 seconds, hide the animation, and reveal the table
+        successAnimationTimeout = setTimeout(() => {
+          clearInterval(successWaveInterval);
+          successWaveInterval = null;
+
+          // Hide result overlay
+          if (resultOverlay) {
+            resultOverlay.classList.remove('show');
+            resultOverlay.innerHTML = '';
+          }
+
+          // Hide the loading overlay
+          const loadingContainer = document.querySelector('.loading-container');
+          if (loadingContainer) {
+            loadingContainer.style.opacity = 0;
+            setTimeout(() => {
+              loadingContainer.style.display = 'none';
+            }, 500);
+          }
+
+          // Reveal the data table
+          const dataTable = document.getElementById('bspDataTable');
+          if (dataTable) {
+            dataTable.style.display = 'table';
+            console.log('%c[startSuccessAnimation] Data table revealed.', 'color: green;');
+          }
+
+          // Reset to idle state
+          setAnimationState('idle');
+        }, 5000); // Changed to 5 seconds
+      }
+
+      function stopSuccessAnimation() {
+        if (successAnimationTimeout) {
+          clearTimeout(successAnimationTimeout);
+          successAnimationTimeout = null;
+          console.log('%c[stopSuccessAnimation] Success animation timeout stopped.', 'color: green;');
+        }
+        if (successWaveInterval) {
+          clearInterval(successWaveInterval);
+          successWaveInterval = null;
+          console.log('%c[stopSuccessAnimation] Success wave animation stopped.', 'color: green;');
+        }
+        // Hide result overlay
+        const resultOverlay = document.getElementById('resultOverlay');
+        if (resultOverlay) {
+          resultOverlay.classList.remove('show');
+          resultOverlay.innerHTML = '';
+        }
+      }
+
+      // ===========================
+      //      DISPLAY MESSAGE FUNCTIONS
+      // ===========================
+      function displayMessageInGrid(message, color) {
+        if (!gridColumns || !gridRows) return;
+
+        // Create a canvas to draw the text
+        const canvas = document.createElement('canvas');
+        canvas.width = gridColumns;
+        canvas.height = gridRows;
+        const ctx = canvas.getContext('2d');
+
+        // Adjust font size based on grid size
+        const fontSize = Math.floor(Math.min(gridColumns, gridRows) / (message.length + 10));
+        ctx.font = `bold ${fontSize}px Arial`;
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Split the message into multiple lines if necessary
+        const lines = wrapText(ctx, message, canvas.width);
+        const lineHeight = fontSize + 5;
+        const startY = (canvas.height - lines.length * lineHeight) / 2;
+
+        lines.forEach((line, i) => {
+          ctx.fillText(line, canvas.width / 2, startY + i * lineHeight);
+        });
+
+        // Get image data and map to grid cells
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        for (let y = 0; y < gridRows; y++) {
+          for (let x = 0; x < gridColumns; x++) {
+            const index = y * gridColumns + x;
+            if (index >= 0 && index < cellsArray.length) {
+              const cell = cellsArray[index].element;
+              const pixelIndex = (y * canvas.width + x) * 4;
+              const alpha = imageData.data[pixelIndex + 3];
+              if (alpha > 128) {
+                cell.style.backgroundColor = color;
+              } else {
+                cell.style.backgroundColor = '';
+              }
+            }
+          }
+        }
+      }
+
+      // Helper function to wrap text
+      function wrapText(ctx, text, maxWidth) {
+        const words = text.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+        
+        for (let i = 1; i < words.length; i++) {
+          const word = words[i];
+          const width = ctx.measureText(currentLine + ' ' + word).width;
+          if (width < maxWidth) {
+            currentLine += ' ' + word;
+          } else {
+            lines.push(currentLine);
+            currentLine = word;
+          }
+        }
+        lines.push(currentLine);
+        return lines;
+      }
+
+      // ===========================
+      //      UPDATE TABLE FUNCTION
+      // ===========================
+      function updateTable(data) {
+        console.log('%c[updateTable] Function called with data:', 'color: purple;', data);
+        if (!Array.isArray(data)) {
+          console.error('%c[updateTable] Unexpected data format received:', 'color: red;', data);
+          return;
+        }
+
+        // Populate the table 
+        const tableBody = document.querySelector('#bspDataTable tbody');
+        console.log('%c[updateTable] Retrieved table body:', 'color: purple;', tableBody);
+
+        data.forEach((item, index) => {
+          // Generate a unique ID for each row 
+          const uniqueId = item.bsp_knowledgepartid || `row-${index}`;
+          if (!document.getElementById(`row-${uniqueId}`)) {
+            const row = document.createElement('tr');
+            row.id = `row-${uniqueId}`;
+
+            // Make the entire row clickable
+            row.addEventListener('click', () => {
+              window.open(item.bsp_source, '_blank');
+            });
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = item.bsp_name || 'N/A';
+            row.appendChild(nameCell);
+            tableBody.appendChild(row);
+            console.log(`[updateTable] Added row ${uniqueId} to the table.`);
+          } else {
+            console.log(`[updateTable] Row ${uniqueId} already exists. Skipping.`);
+          }
+        });
+
+        // Show the table 
+        const dataTable = document.getElementById('bspDataTable');
+        if (dataTable) {
+          dataTable.style.display = 'table';
+          console.log('%c[updateTable] bspDataTable displayed.', 'color: purple;');
+        } else {
+          console.error('%c[updateTable] bspDataTable not found.', 'color: red;');
+        }
+      }
+
+      // ===========================
+      //      ERROR HANDLING
+      // ===========================
+      function handleError(message) {
+        console.error('%c[handleError] Handling generic error:', 'color: red;', message);
+        // Update animation to 'error' state with message
+        setAnimationState('error', message);
+      }
+
+      function handleError429(message) {
+        console.warn('%c[handleError429] Handling 429 error:', 'color: orange;', message);
+        // Update animation to 'error' state with message
+        setAnimationState('error', message);
+      }
+
+      function handleTimeout() {
+        console.warn('%c[handleTimeout] Handling timeout.', 'color: orange;');
+        handleError("The request timed out. Please try again later.");
+        testbotModule.timeoutOccurred = true;
+      }
+
+      // ===========================
+      //      ICON REGISTRATION
+      // ===========================
+      (function() {
+        if (!window.iconsRegistered && typeof registerIcons === 'function') {
+          try {
+            registerIcons(['GlobalNavButton', 'ChevronDown', 'ChevronUp', 'Edit', 'Add', 'Cancel', 'More', 'Settings', 'Mail', 'Filter']);
+            window.iconsRegistered = true;
+            console.log('%c[Icon Registration] Icons registered successfully.', 'color: green;');
+          } catch (e) {
+            console.warn('Icon registration failed:', e);
+          }
+        } else {
+          if (window.iconsRegistered) {
+            console.log('%c[Icon Registration] Icons already registered. Skipping registration.', 'color: gray;');
+          } else {
+            console.warn('%c[Icon Registration] registerIcons function is not defined. Skipping icon registration.', 'color: orange;');
+          }
+        }
+      })();
+
+      // ===========================
+      //      HIGHLIGHT CELL FUNCTION
+      // ===========================
+      function highlightCell(event) {
+        const cell = event.target;
+        cell.classList.add('highlighted');
+        
+        setTimeout(() => {
+          cell.classList.remove('highlighted');
+        }, 10000);
+      }
+
+      // Attach click event to grid cells 
+      function attachCellEvents() {
+        const cells = document.querySelectorAll('.grid-cell');
+        cells.forEach(cell => {
+          cell.addEventListener('click', highlightCell);
+        });
+        console.log('%c[attachCellEvents] Click events attached to grid cells.', 'color: blue;');
+      }
+
+      // ===========================
+      //      HANDLE MOUSE MOVE
+      // ===========================
+      let mouseAnimationFrame;
+      function handleMouseMove(event) {
+        const container = event.currentTarget;
+        if (!container) {
+          console.error('%c[handleMouseMove] Grid container not found.', 'color: red;');
+          return;
+        }
+        // Cancel the previous animation frame if it exists
+        if (mouseAnimationFrame) {
+          cancelAnimationFrame(mouseAnimationFrame);
+        }
+
+        // Request a new animation frame
+        mouseAnimationFrame = requestAnimationFrame(() => {
+          const rect = container.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          // Calculate which cells are within the radius
+          const radius = 50; // Radius in pixels
+          const minX = Math.max(x - radius, 0);
+          const maxX = Math.min(x + radius, rect.width);
+          const minY = Math.max(y - radius, 0);
+          const maxY = Math.min(y + radius, rect.height);
+
+          // Determine the range of columns and rows affected
+          const startCol = Math.floor(minX / (gridCellSize + gridCellGap));
+          const endCol = Math.floor(maxX / (gridCellSize + gridCellGap));
+          const startRow = Math.floor(minY / (gridCellSize + gridCellGap));
+          const endRow = Math.floor(maxY / (gridCellSize + gridCellGap));
+
+          // Iterate through the affected cells
+          for (let row = startRow; row <= endRow; row++) {
+            for (let col = startCol; col <= endCol; col++) {
+              // Calculate the cell index
+              const index = row * gridColumns + col;
+              if (index >= 0 && index < cellsArray.length) {
+                const cell = cellsArray[index].element;
+                const cellCenterX = col * (gridCellSize + gridCellGap) + gridCellSize / 2 + gridCellGap / 2;
+                const cellCenterY = row * (gridCellSize + gridCellGap) + gridCellSize / 2 + gridCellGap / 2;
+                const distance = Math.hypot(x - cellCenterX, y - cellCenterY);
+                
+                if (distance < radius) {
+                  // Apply highlight via CSS class
+                  cell.classList.add('highlighted');
+                } else {
+                  // Remove highlight if not already highlighted
+                  cell.classList.remove('highlighted');
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // ===========================
+      //      DEBOUNCE AND THROTTLE
+      // ===========================
+      function throttle(func, limit) {
+        let lastFunc;
+        let lastRan;
+        return function() {
+          const context = this;
+          const args = arguments;
+          if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+          } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+              if ((Date.now() - lastRan) >= limit) {
+                func.apply(context, args);
+                lastRan = Date.now();
+              }
+            }, limit - (Date.now() - lastRan));
+          }
+        }
+      }
+
+      function debounce(func, wait) {
+        let timeout;
+        return function() {
+          const context = this, args = arguments;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+      }
+
+      // ===========================
+      //      ANIMATE ON SCROLL
+      // ===========================
+      function bspAnimateOnScroll() {
+        // Placeholder for scroll animations if needed
+      }
+
+      // Attach throttled scroll event listener 
+      window.addEventListener('scroll', throttle(bspAnimateOnScroll, 200));
+
+      // ===========================
+      //      SUCCESS ANIMATION MANAGEMENT
+      // ===========================
+      // (Note: The success animation is already handled within setAnimationState)
+      // No additional changes are needed here as the startSuccessAnimation function
+      // mirrors the startErrorAnimation with green color shades.
+
+    })();
+  </script>
+  
+  <!-- Load BesperBot Styles -->
+  <link rel="stylesheet" href="https://unpkg.com/besperbot@1.0.3/styles.css">
+    
+  <!-- Define initBot function before loading BesperBot -->
+  <script>
+      // UPDATED initBot function:
+      function initBot() {
+          window.BesperBot.initSession({
+              id: 'asst_tvVpPGUtpGVeU6qjVlA679aY',  // Same Bot ID as before
+              containerId: 'bspIframeContainer',   // Same container div
+              mode: 'widget-false',               // Use 'widget-false' mode
+              customConfig: {
+                        styles: {
+                            chat: {
+                                backgroundColor: '#EFEFEF',       // Chat background color
+                                fontSize: '16px',                 // Font size within chat
+                                borderRadius: '12px',             // Chat container border radius
+                                // Add more chat-specific styles as needed
+                                bubbleBackground: '#FFFFFF',      // Message bubble background
+                                bubbleFromUserBackground: '#DCF8C6', // Message bubble from user
+                                bubbleBackgroundColor: '#FFFFFF', // Alternative property if needed
+                                // Example of overriding specific WebChat style options
+                                hideScrollToEnd: true,            // Hide "Scroll to end" button if desired
+                            },
+                            // Since 'widget-false' mode skips widget creation, widget styles can be omitted or left empty
+                            widget: {
+                                // No widget-related styles needed for 'widget-false' mode
+                            }
+                        }
+                    }
+                });
+          console.log('BesperBot initialized successfully!');
+      }
+  </script>
+
+  <!-- Load Microsoft Bot Framework Web Chat -->
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+
+  <!-- Load BesperBot Library -->
+  <script src="https://unpkg.com/besperbot@1.0.3/besperbot.js" onload="initBot()"></script>
+
+</body>
+</html>

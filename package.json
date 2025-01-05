@@ -1,6 +1,6 @@
 {
   "name": "besperbot",
-  "version": "1.0.3",
+  "version": "1.0.15",
   "description": "A JavaScript chatbot integration library for Microsoft Bot Framework",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

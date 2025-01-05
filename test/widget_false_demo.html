@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BesperBot Simple Token Fetch Example</title>
+  <!-- Include the BesperBot library -->
+  <script src="../index.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #botTokenContainer {
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      max-width: 600px;
+      word-wrap: break-word;
+    }
+    #botTokenContainer.error {
+      border-color: #e74c3c;
+      background-color: #fdecea;
+      color: #e74c3c;
+    }
+    #botTokenContainer.success {
+      border-color: #2ecc71;
+      background-color: #eafaf1;
+      color: #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fetch Azure Bot Session Token</h1>
+  <button id="fetchTokenBtn">Get Session Token</button>
+  <div id="botTokenContainer"></div>
+
+  <script>
+    document.getElementById('fetchTokenBtn').addEventListener('click', async function () {
+      const botId = 'asst_qGCW5077BKbylOGSsK5rDDYO'; // Replace with your actual Bot ID
+      const apiEndpoint = 'https://b-esper-apim.azure-api.net/dev/sessions/initiate'; // Replace with your actual API endpoint
+
+      const tokenContainer = document.getElementById('botTokenContainer');
+      tokenContainer.className = '';
+      tokenContainer.textContent = 'Fetching session token...';
+
+      try {
+        const token = await BesperBot.besperbot_get_session_token(botId, apiEndpoint);
+        tokenContainer.classList.add('success');
+        tokenContainer.textContent = `Session Token: ${token}`;
+      } catch (error) {
+        tokenContainer.classList.add('error');
+        tokenContainer.textContent = `Error: ${error.message}`;
+        console.error('Error fetching session token:', error);
+      }
+    });
+  </script>
+</body>
+</html>

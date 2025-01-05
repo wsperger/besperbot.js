@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BesperBot Container Example</title>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src="../index.js"></script>
+</head>
+<body>
+    <h1>BesperBot Container Example</h1>
+    <div id="chat-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            BesperBot.initSession({
+                id: 'asst_qGCW5077BKbylOGSsK5rDDYO',
+                containerId: 'chat-container',
+                mode: 'widget-false',
+                customConfig: {
+                    logging: true,
+                    containerSize: {
+                        width: '400px',
+                        height: '600px'
+                    },
+                    styles: {
+                        container: {
+                            border: '1px solid #ccc',
+                            borderRadius: '8px'
+                        },
+                        chat: {
+                            bubbleBackground: '#f0f0f0',
+                            bubbleFromUserBackground: '#0078d4',
+                            bubbleTextColor: '#333333',
+                            bubbleFromUserTextColor: '#ffffff'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
